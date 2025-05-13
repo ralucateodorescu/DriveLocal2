@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveLocal – Rent a car local</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#009688'
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .section-title {
+      @apply text-3xl font-bold text-primary mb-10 text-center;
+    }
+
+    .card {
+      @apply bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-[1.02] hover:shadow-xl;
+    }
+  </style>
+
+  <!-- Librării externe -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+
+  <!-- Stiluri personalizate -->
+  <style>
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #4caf50;
+      color: white;
+      padding: 16px;
+      border-radius: 8px;
+      z-index: 1000;
+      display: none;
+    }
+
+    .swiper-container {
+      width: 100%;
+      height: 400px;
+    }
+
+    .swiper-slide img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+
+    body.bg-gray-900 {
+      background-color: #1a202c;
+      color: white;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      display: none !important;
+    }
+
+    .swiper-pagination {
+      position: relative;
+      margin-top: 1rem;
+      z-index: 0;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 overflow-x-hidden">
+
+  <!-- Navigație -->
+  <nav class="bg-white shadow fixed top-0 w-full z-50">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="#" class="text-xl font-bold text-primary">DriveLocal</a>
+      <div class="space-x-4">
+        <a href="#despre" class="hover:text-primary">Despre</a>
+        <a href="#clienti" class="hover:text-primary">Clienți</a>
+        <a href="#parteneri" class="hover:text-primary">Parteneri</a>
+        <a href="#sondaj" class="hover:text-primary">Sondaj</a>
+        <a href="#contact" class="hover:text-primary">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero cu imagine -->
+  <section class="relative h-[80vh] bg-center bg-cover mt-16"
+    style="background-image: url('https://images.pexels.com/photos/305070/pexels-photo-305070.jpeg');">
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40 flex flex-col items-center justify-center text-white text-center px-4">
+      <h1 class="text-5xl font-bold mb-4" data-aos="fade-up">DriveLocal</h1>
+      <a href="#contact"
+        class="bg-white text-primary px-6 py-3 rounded font-semibold hover:bg-gray-100 hover:scale-105 transition transform duration-300">Contactează-ne</a>
+    </div>
+  </section>
+
+  <!-- Despre noi -->
+  <section id="despre" class="py-20 px-6 bg-gray-100">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-bold text-primary mb-10 text-center">Despre DriveLocal</h2>
+      <p class="text-lg leading-relaxed" data-aos="fade-up">
+        Închiriază mașina potrivită pentru fiecare ocazie, direct din orașul tău! Fie că ai nevoie de un SUV pentru un
+        drum de munte, un sedan elegant pentru întâlniri de afaceri sau un hatchback economic pentru naveta zilnică,
+        DriveLocal îți oferă cele mai bune opțiuni la prețuri competitive.
+      </p>
+    </div>
+  </section>
+
+  <!-- Flota DriveLocal -->
+  <section id="flota" class="py-20 px-6 bg-gray-50">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-bold text-primary mb-10 text-center">Flota DriveLocal</h2>
+
+      <!-- Filtru tip mașină -->
+      <div class="mb-10 text-center">
+        <select id="carFilter" class="p-2 border border-gray-300 rounded-md">
+          <option value="all">Toate</option>
+          <option value="suv">SUV</option>
+          <option value="hatchback">Hatchback</option>
+          <option value="sedan">Sedan</option>
+          <option value="cabrio">Cabrio</option>
+          <option value="luxury">Mașină de lux</option>
+          <option value="electric">Mașină electrică</option>
+          <option value="van">Van pentru familie</option>
+        </select>
+      </div>
+
+      <!-- Carusel Swiper -->
+      <div id="carusel-flota" class="swiper-container">
+        <div class="swiper-wrapper">
+          <!-- Fiecare slide conține o mașină -->
+          <div class="swiper-slide" data-category="suv">
+            <img src="https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg"
+              class="w-full rounded-lg shadow-md" alt="SUV">
+            <h3 class="text-lg mt-4 font-semibold text-center">SUV Confortabil</h3>
+          </div>
+          <div class="swiper-slide" data-category="hatchback">
+            <img
+              src="https://images.pexels.com/photos/7290407/pexels-photo-7290407.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              class="w-full rounded-lg shadow-md" alt="Hatchback">
+            <h3 class="text-lg mt-4 font-semibold text-center">Hatchback Economic</h3>
+          </div>
+          <div class="swiper-slide" data-category="sedan">
+            <img
+              src="https://images.pexels.com/photos/117538/pexels-photo-117538.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              class="w-full rounded-lg shadow-md" alt="Sedan">
+            <h3 class="text-lg mt-4 font-semibold text-center">Sedan Elegant</h3>
+          </div>
+          <div class="swiper-slide" data-category="cabrio">
+            <img
+              src="https://cdn.bmwblog.com/wp-content/uploads/2016/02/2016-MINI-Cooper-S-Convertible-review-Melting-Silver23.jpg"
+              class="w-full rounded-lg shadow-md" alt="Cabrio">
+            <h3 class="text-lg mt-4 font-semibold text-center">Cabrio pentru vară</h3>
+          </div>
+          <div class="swiper-slide" data-category="luxury">
+            <img src="https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg"
+              class="w-full rounded-lg shadow-md" alt="Luxury">
+            <h3 class="text-lg mt-4 font-semibold text-center">Mașină de lux</h3>
+          </div>
+          <div class="swiper-slide" data-category="electric">
+            <img
+              src="https://img.freepik.com/premium-photo/concept-electric-cars-white-car-charging-station-generative-ai_260899-3287.jpg"
+              class="w-full rounded-lg shadow-md" alt="Electric">
+            <h3 class="text-lg mt-4 font-semibold text-center">Mașină electrică</h3>
+          </div>
+          <div class="swiper-slide" data-category="van">
+            <img src="https://th.bing.com/th/id/OIP.o2bk1mjKnm5TAo04FO0C9AHaE8?w=273&h=182&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+              class="w-full rounded-lg shadow-md" alt="Van">
+            <h3 class="text-lg mt-4 font-semibold text-center">Van pentru familie</h3>
+          </div>
+        </div>
+
+        <!-- Navigare Swiper -->
+        <div class="swiper-button-next text-primary"></div>
+        <div class="swiper-button-prev text-primary"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Parteneri -->
+  <section id="parteneri" class="py-20 px-6 bg-gray-100">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-bold text-primary mb-10 text-center">Partenerii Noștri</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- Card Partener 1 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105">
+          <img src="https://th.bing.com/th/id/R.43c559e9de2542d4a86d21f42c1ff0fd?rik=Y5Dg7YSKEwKm3Q&pid=ImgRaw&r=0"
+            alt="OMV București" class="w-full h-40 object-cover rounded-md">
+          <h3 class="text-xl font-semibold mt-4">OMV București</h3>
+          <p class="text-gray-600">Stație de carburant premium.</p>
+          <a href="https://www.omv.ro" target="_blank"
+            class="text-primary mt-2 inline-block font-semibold hover:underline">Vezi detalii</a>
+        </div>
+
+        <!-- Card Partener 2 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105">
+          <img src="https://th.bing.com/th/id/OIP.A-Xdr10xF5L8eJ8nMHvc2gHaEb?w=280&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+            alt="MOL Timișoara" class="w-full h-40 object-cover rounded-md">
+          <h3 class="text-xl font-semibold mt-4">MOL Timișoara</h3>
+          <p class="text-gray-600">Carburant și servicii auto.</p>
+          <a href="https://www.molromania.ro" target="_blank"
+            class="text-primary mt-2 inline-block font-semibold hover:underline">Vezi detalii</a>
+        </div>
+
+        <!-- Card Partener 3 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105">
+          <img src="https://th.bing.com/th/id/OIP.iOCVJaNiCP3OkSyoqivufQHaEK?w=295&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+            alt="Rompetrol Cluj" class="w-full h-40 object-cover rounded-md">
+          <h3 class="text-xl font-semibold mt-4">Rompetrol Cluj</h3>
+          <p class="text-gray-600">Stație modernă în Cluj.</p>
+          <a href="https://www.rompetrol.ro" target="_blank"
+            class="text-primary mt-2 inline-block font-semibold hover:underline">Vezi detalii</a>
+        </div>
+
+        <!-- Card Partener 4 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105">
+          <img src="https://th.bing.com/th/id/OIP.flKhyff2dmlal5-sY3ekdQHaDd?w=301&h=163&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+            alt="Lukoil Iași" class="w-full h-40 object-cover rounded-md">
+          <h3 class="text-xl font-semibold mt-4">Lukoil Iași</h3>
+          <p class="text-gray-600">Stație carburant convenabilă.</p>
+          <a href="https://www.lukoil.ro" target="_blank"
+            class="text-primary mt-2 inline-block font-semibold hover:underline">Vezi detalii</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Clienți -->
+  <section id="clienti" class="py-20 px-6 bg-white">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-bold text-primary mb-10">Pentru clienți</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+
+        <div class="bg-gray-100 p-6 rounded-xl shadow hover:shadow-lg transition">
+          <h3 class="text-xl font-semibold mb-2">Diversitate</h3>
+          <p>Alege din zeci de modele, de la furnizori locali.</p>
+        </div>
+
+        <div class="bg-gray-100 p-6 rounded-xl shadow hover:shadow-lg transition">
+          <h3 class="text-xl font-semibold mb-2">Flexibilitate</h3>
+          <p>Închiriezi doar când ai nevoie. Fără contracte complicate.</p>
+        </div>
+
+        <div class="bg-gray-100 p-6 rounded-xl shadow hover:shadow-lg transition">
+          <h3 class="text-xl font-semibold mb-2">Prețuri mai bune</h3>
+          <p>Fără comisioane mari. Direct de la sursă.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Formular de Contact -->
+  <section id="contact" class="py-20 px-6 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold text-primary mb-10 text-center">Contactează-ne</h2>
+      <form id="contactForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <input type="text" placeholder="Nume complet" class="border p-4 rounded-md" required>
+        <input type="email" placeholder="Email" class="border p-4 rounded-md" required>
+        <input type="text" placeholder="Telefon" class="border p-4 rounded-md" required>
+        <input type="text" placeholder="Subiect" class="border p-4 rounded-md" required>
+        <textarea placeholder="Mesajul tău" class="border p-4 rounded-md md:col-span-2" rows="5" required></textarea>
+        <button type="submit" class="bg-primary text-white p-4 rounded-md md:col-span-2 hover:bg-primary/90">
+          Trimite mesajul
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Testimoniale -->
+  <section id="testimoniale" class="py-20 px-6 bg-gray-50">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-bold text-primary mb-10 text-center">Ce spun clienții noștri</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <div class="bg-white p-6 rounded-lg shadow-md" data-aos="fade-right">
+          <p>"Am închiriat un SUV pentru un weekend la munte și totul a fost impecabil. Mașina curată, preț bun și
+            echipa foarte amabilă!"</p>
+          <p class="mt-4 text-right font-semibold">- Andrei Popescu</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md" data-aos="fade-left">
+          <p>"DriveLocal mi-a făcut călătoria mai ușoară. Rezervarea a fost simplă, iar mașina a fost gata în mai puțin
+            de 30 de minute."</p>
+          <p class="mt-4 text-right font-semibold">- Maria Ionescu</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md" data-aos="fade-right">
+          <p>"Am folosit DriveLocal pentru o delegație de afaceri și am fost foarte mulțumit. Flexibilitate și suport
+            excelent."</p>
+          <p class="mt-4 text-right font-semibold">- Alexandru Mihai</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md" data-aos="fade-left">
+          <p>"Recomand cu încredere! Prețuri corecte și mașini bine întreținute. O alegere excelentă pentru oricine are
+            nevoie de mobilitate rapidă."</p>
+          <p class="mt-4 text-right font-semibold">- Elena Vasilescu</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Sondaj -->
+  <section id="sondaj" class="py-20 px-6 bg-white">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl font-bold text-primary mb-6">Ajută-ne să ne îmbunătățim!</h2>
+      <p class="text-lg text-gray-600 mb-10">
+        Completează sondajul nostru și contribuie direct la dezvoltarea DriveLocal. Părerea ta contează!
+      </p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSc0IrhMhJGFKhy20-9sImH9L5GuwdqBMZaTu0Yn1wNV4qhBVg/viewform?usp=dialog"
+        target="_blank" class="bg-primary text-white px-8 py-3 rounded-md font-semibold hover:bg-primary/90 transition">
+        Completează sondajul
+      </a>
+    </div>
+  </section>
+
+  <!-- Calculator de Preț -->
+  <section id="calculator" class="py-20 px-6 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold text-primary mb-10 text-center">Calculator de Preț</h2>
+      <form id="priceCalculator" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <select id="carType" class="border p-4 rounded-md">
+          <option value="90">SUV - 90€/zi</option>
+          <option value="50">Hatchback - 50€/zi</option>
+          <option value="70">Sedan - 70€/zi</option>
+          <option value="100">Cabrio - 100€/zi</option>
+          <option value="120">Mașină de lux - 120€/zi</option>
+          <option value="80">Mașină electrică - 80€/zi</option>
+          <option value="60">Van pentru familie - 60€/zi</option>
+        </select>
+        <input type="number" id="days" placeholder="Număr de zile" class="border p-4 rounded-md" required>
+        <button type="submit" class="bg-primary text-white p-4 rounded-md hover:bg-primary/90">Calculează</button>
+      </form>
+      <p id="totalCost" class="text-2xl font-bold text-center mt-8"></p>
+    </div>
+  </section>
+
+  <!-- Chat Asistență -->
+  <section id="chat-section" class="py-20 px-6 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold text-primary mb-10 text-center">Chat Asistență</h2>
+      <div class="bg-gray-100 rounded-lg p-4 shadow-md">
+        <div id="chat-window" class="h-64 overflow-y-auto border border-gray-300 rounded-md p-4 mb-4 bg-white text-sm">
+        </div>
+        <form id="chat-form" class="flex gap-2">
+          <input type="text" id="chat-input" placeholder="Scrie un mesaj..." class="flex-1 border p-2 rounded-md"
+            required />
+          <button type="submit" class="bg-primary text-white px-4 rounded-md">Trimite</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Google Maps Locații -->
+  <section id="locatii" class="py-20 px-6 bg-gray-50">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-bold text-primary mb-10 text-center">Locații Pick-up & Drop-off</h2>
+      <div id="map" class="w-full h-[500px] rounded-lg shadow-md"></div>
+    </div>
+  </section>
+
+  <!-- Scripturi finale -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXBGeniVuqMKDPkOMxmu-bX6B6GDykq2g&callback=initMap"
+    async defer></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+
+    const swiper = new Swiper('.swiper-container', {
+      loop: false,
+      autoplay: { delay: 3000, disableOnInteraction: false },
+      spaceBetween: 20,
+      slidesPerView: 3,
+      pagination: { el: '.swiper-pagination', clickable: true },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        640: { slidesPerView: 1 },
+        768: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 },
+      },
+    });
+
+    document.getElementById('carFilter')?.addEventListener('change', (e) => {
+      const category = e.target.value;
+      document.querySelectorAll('.swiper-slide').forEach(slide => {
+        slide.style.display = (category === 'all' || slide.dataset.category === category) ? 'block' : 'none';
+      });
+      swiper.update();
+    });
+
+    document.getElementById('priceCalculator')?.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const carType = parseInt(document.getElementById('carType').value);
+      const days = parseInt(document.getElementById('days').value);
+      const totalCost = document.getElementById('totalCost');
+
+      if (!isNaN(carType) && !isNaN(days) && days > 0) {
+        const total = carType * days;
+        totalCost.textContent = `Cost Total: ${total} €`;
+      } else {
+        totalCost.textContent = 'Introduceți un număr valid de zile.';
+      }
+    });
+
+    function initMap() {
+      const locatii = [
+        { lat: 44.4268, lng: 26.1025, title: "București - Centru" },
+        { lat: 45.7489, lng: 21.2087, title: "Timișoara - Aeroport" },
+        { lat: 46.7712, lng: 23.6236, title: "Cluj-Napoca - Centru" },
+        { lat: 47.1585, lng: 27.6014, title: "Iași - Gară" }
+      ];
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 6,
+        center: locatii[0],
+      });
+      locatii.forEach(loc => new google.maps.Marker({ position: loc, map, title: loc.title }));
+    }
+
+    window.initMap = initMap;
+
+    document.getElementById('contactForm')?.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const toast = document.getElementById('toast');
+      toast.style.display = 'block';
+      setTimeout(() => toast.style.display = 'none', 3000);
+      this.reset();
+    });
+
+    document.getElementById('chat-form')?.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const msg = input.value.trim();
+      if (msg !== '') {
+        addMessage('Tu', msg);
+        setTimeout(() => addMessage('DriveBot', generateBotReply(msg)), 800);
+        input.value = '';
+      }
+    });
+
+    function addMessage(sender, text) {
+      const chatWindow = document.getElementById('chat-window');
+      const msg = document.createElement('div');
+      msg.classList.add('mb-2');
+      msg.innerHTML = `<strong>${sender}:</strong> ${text}`;
+      chatWindow.appendChild(msg);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function generateBotReply(msg) {
+      const lower = msg.toLowerCase();
+      if (lower.includes('preț') || lower.includes('cost')) return 'Prețurile variază între 50€ și 120€/zi.';
+      if (lower.includes('rezervare')) return 'Rezervarea se face prin formular sau telefonic.';
+      if (lower.includes('electric')) return 'Avem și mașini electrice disponibile!';
+      return 'Mulțumim pentru mesaj! Revenim în scurt timp.';
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+          scrollTopBtn.style.display = 'block';
+        } else {
+          scrollTopBtn.style.display = 'none';
+        }
+      });
+
+      if (scrollTopBtn) {
+        scrollTopBtn.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+    });
+
+
+
+    // Mod noapte
+    function toggleNightMode() {
+      const body = document.body;
+      const sections = document.querySelectorAll('section, nav, footer');
+      const isDark = body.classList.toggle("bg-gray-900");
+      body.classList.toggle("text-white");
+      body.classList.toggle("text-gray-800", !isDark);
+
+      sections.forEach(section => {
+        if (isDark) {
+          section.classList.remove('bg-white', 'bg-gray-50', 'bg-gray-100');
+          section.classList.add('bg-gray-800');
+        } else {
+          section.classList.remove('bg-gray-800');
+          section.classList.add('bg-white');
+        }
+      });
+    }
+    window.toggleNightMode = toggleNightMode;
+  </script>
+
+  <!-- Toast + Scroll top -->
+  <div id="toast">Mesajul a fost trimis cu succes!</div>
+  <button id="scrollTopBtn" class="fixed bottom-5 right-5 z-50 bg-primary text-white p-3 rounded-full shadow-lg hidden"
+    title="Mergi sus">
+    🔝
+  </button>
+  <button onclick="toggleNightMode()" class="fixed top-5 right-3 z-50 bg-gray-800 text-white p-2 rounded"
+    title="Mod noapte">
+    🌙
+  </button>
